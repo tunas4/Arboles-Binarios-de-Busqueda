@@ -1,130 +1,118 @@
-import nodo
+from nodo import Nodo
 
-class arbol_binario_busqueda:
+class ArbolBinarioBusqueda:
     def __init__(self):
         self.raiz = None
 
-    def PreOrder (self, nodo):
-        if (nodo != None):
-            print (nodo.dato)
-            self.PreOrder(nodo.izquierda)
-            self.PreOrder(nodo.derecha)
-
-    def InOrder (self, nodo):
-        if (nodo != None):
-            self.InOrder(nodo.izquierda)
-            print (nodo.dato)
-            self.InOrder(nodo.derecha)
-
-    def PostOrder (self, nodo):
-        if (nodo != None):
-            self.PostOrder(nodo.izquierda)
-            self.PostOrder(nodo.derecha)
-            print (nodo.dato)
-
     def insertar(self, nodo, dato):
-        if (nodo == None):
-            q = nodo.Nodo()
-            q.dato = dato
-            self.raiz = q
+        if nodo is None:
+            nuevo_nodo = Nodo(dato)
+            if self.raiz is None:
+                self.raiz = nuevo_nodo
+            return nuevo_nodo
         else:
-            if (dato <= nodo.dato):
-                if nodo.izquierda == None:
-                    q = nodo.Nodo()
-                    q.dato = dato
-                    nodo.izquierda = q
+            if dato <= nodo.dato:
+                if nodo.izquierda is None:
+                    nodo.izquierda = Nodo(dato, nodo)
                 else:
                     self.insertar(nodo.izquierda, dato)
             else:
-                if nodo.derecha == None:
-                    q = nodo.Nodo()
-                    q.dato = dato
-                    nodo.derecha = q
+                if nodo.derecha is None:
+                    nodo.derecha = Nodo(dato, nodo)
                 else:
                     self.insertar(nodo.derecha, dato)
+        return self.raiz
 
-    def buscar(self, nodo, dato):
-        if (nodo == None):
-            return None
-        elif (nodo.dato == dato):
-            return nodo
-        elif (dato < nodo.dato):
-            return self.buscar(nodo.izquierda, dato)
-        return self.buscar(nodo.derecha, dato)
+    def buscar(self, nodo, dato, nivel=0):
+        if nodo is None:
+            return None, -1
+        if nodo.dato == dato:
+            return nodo, nivel
+        elif dato < nodo.dato:
+            return self.buscar(nodo.izquierda, dato, nivel + 1)
+        else:
+            return self.buscar(nodo.derecha, dato, nivel + 1)
 
     def eliminar(self, dato):
-        res = self.buscar(self.raiz, dato)
-        if (res != None):
+        nodo, _ = self.buscar(self.raiz, dato)
+        if nodo is None:
+            print("El dato no se encuentra en el árbol.")
             return None
-        
+
         hijos = 0
-        a = nodo.Nodo()
+        hijo = None
 
-        if (res.derecha != None):
+        if nodo.derecha is not None:
             hijos += 1
-            a = res.izquierda
-        
-        if (res.izquierda != None):
+            hijo = nodo.derecha
+        if nodo.izquierda is not None:
             hijos += 1
-            a = res.derecha
+            hijo = nodo.izquierda
 
-        if (hijos == 0):
-            if res.padre == None:
-                r = None
+        # hoja
+        if hijos == 0:
+            if nodo == self.raiz:
+                self.raiz = None
             else:
-                p = res.padre
-                if (p.izquierda == res):
-                    p.izquierda = None
+                padre = nodo.padre
+                if padre.izquierda == nodo:
+                    padre.izquierda = None
                 else:
-                    p.derecha = None
-                res.padre = None
-            return res
-        
-        elif (hijos == 1):
-            if res.padre == None:
-                self.raiz = a
-                a.padre = None
-                if res.izquierda == a:
-                    res.izquierda = None
+                    padre.derecha = None
+            return nodo
+
+        # un hijo
+        elif hijos == 1:
+            if nodo == self.raiz:
+                self.raiz = hijo
+                hijo.padre = None
             else:
-                p = res.padre
-                if (p.izquierda == res):
-                    p.izquierda = a
+                padre = nodo.padre
+                if padre.izquierda == nodo:
+                    padre.izquierda = hijo
                 else:
-                    p.derecha = a
-                a.padre = p 
-                res.padre = None
-                if res.izquierda == a:
-                    res.izquierda = None
-                else:
-                    res.derecha = None
-            return res
-    
-        elif (hijos == 2):
-            t = a
-            while (t.derecha != None):
-                t = t.derecha
-            res.dato = t.dato
-            t.dato = dato
-            if a == t:
-                res.izquierda = a.izquierda
-                a.padre = None
-                a.izquierda = None
-                if res.izquierda != None:
-                    res.izquierda.padre = res
+                    padre.derecha = hijo
+                hijo.padre = padre
+            return nodo
+
+        # dos hijos
+        else:
+            sucesor = nodo.derecha
+            while sucesor.izquierda is not None:
+                sucesor = sucesor.izquierda
+
+            nodo.dato = sucesor.dato
+
+            if sucesor.padre.izquierda == sucesor:
+                sucesor.padre.izquierda = sucesor.derecha
             else:
-                q = t.padre
-                q.derecha = t.izquierda
-                t.padre = None
-                t.izquierda = None
-                if q.derecha != None:
-                    q.derecha.padre = q
-            return t
-        
+                sucesor.padre.derecha = sucesor.derecha
+
+            if sucesor.derecha is not None:
+                sucesor.derecha.padre = sucesor.padre
+
+            return nodo
+
+    def PreOrder(self, nodo):
+        if nodo:
+            print(nodo.dato, end=" ")
+            self.PreOrder(nodo.izquierda)
+            self.PreOrder(nodo.derecha)
+
+    def InOrder(self, nodo):
+        if nodo:
+            self.InOrder(nodo.izquierda)
+            print(nodo.dato, end=" ")
+            self.InOrder(nodo.derecha)
+
+    def PostOrder(self, nodo):
+        if nodo:
+            self.PostOrder(nodo.izquierda)
+            self.PostOrder(nodo.derecha)
+            print(nodo.dato, end=" ")
+
     def liberar(self, nodo):
-        if (nodo != None):
+        if nodo is not None:
             self.liberar(nodo.izquierda)
             self.liberar(nodo.derecha)
             nodo.izquierda = nodo.derecha = nodo.padre = None
-
-    
