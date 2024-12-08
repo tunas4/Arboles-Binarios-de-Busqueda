@@ -6,19 +6,16 @@ from arbol_binario_busqueda import ArbolBinarioBusqueda
 arbol = ArbolBinarioBusqueda()
 
 def solo_numeros(entrada):
-    """Valida que la entrada contenga solo números (positivos o negativos)."""
     if entrada == "" or entrada == "-" or (entrada[0] == "-" and entrada[1:].isdigit()) or entrada.isdigit():
         return True
     return False
 
 def inicializar_arbol():
-    """Inicializa o borra el árbol binario."""
     arbol.liberar(arbol.raiz)
     arbol.raiz = None
     messagebox.showinfo("Operación exitosa", "Árbol inicializado/borrado.")
 
 def mostrar_recorrido(ventana):
-    """Muestra los recorridos del árbol en una nueva ventana."""
     if arbol.raiz is None:
         messagebox.showwarning("Error", "El árbol está vacío.")
         return
@@ -45,7 +42,6 @@ def mostrar_recorrido(ventana):
     label_resultado.pack(pady=10)
 
 def buscar_dato(ventana):
-    """Busca un dato en el árbol."""
     def buscar():
         try:
             dato = int(entry.get())
@@ -68,7 +64,6 @@ def buscar_dato(ventana):
     tk.Button(nueva_ventana, text="Buscar", command=buscar).pack(pady=10)
 
 def insertar_dato(ventana):
-    """Inserta un dato en el árbol."""
     def insertar():
         try:
             dato = int(entry.get())
@@ -88,7 +83,6 @@ def insertar_dato(ventana):
     tk.Button(nueva_ventana, text="Insertar", command=insertar).pack(pady=10)
 
 def eliminar_dato(ventana):
-    """Elimina un dato del árbol."""
     def eliminar():
         try:
             dato = int(entry.get())
@@ -111,7 +105,6 @@ def eliminar_dato(ventana):
     tk.Button(nueva_ventana, text="Eliminar", command=eliminar).pack(pady=10)
 
 def modificar_dato(ventana):
-    """Modifica un dato del árbol."""
     def modificar():
         try:
             dato = int(entry_dato.get())
