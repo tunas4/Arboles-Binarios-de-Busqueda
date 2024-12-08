@@ -94,22 +94,28 @@ class ArbolBinarioBusqueda:
             return nodo
 
     def PreOrder(self, nodo):
+        resultado = []
         if nodo:
-            print(nodo.dato, end=" ")
-            self.PreOrder(nodo.izquierda)
-            self.PreOrder(nodo.derecha)
+            resultado.append(nodo.dato)
+            resultado.extend(self.PreOrder(nodo.izquierda))
+            resultado.extend(self.PreOrder(nodo.derecha))
+        return resultado
 
     def InOrder(self, nodo):
+        resultado = []
         if nodo:
-            self.InOrder(nodo.izquierda)
-            print(nodo.dato, end=" ")
-            self.InOrder(nodo.derecha)
+            resultado.extend(self.InOrder(nodo.izquierda))
+            resultado.append(nodo.dato)
+            resultado.extend(self.InOrder(nodo.derecha))
+        return resultado
 
     def PostOrder(self, nodo):
+        resultado = []
         if nodo:
-            self.PostOrder(nodo.izquierda)
-            self.PostOrder(nodo.derecha)
-            print(nodo.dato, end=" ")
+            resultado.extend(self.PostOrder(nodo.izquierda))
+            resultado.extend(self.PostOrder(nodo.derecha))
+            resultado.append(nodo.dato)
+        return resultado
 
     def liberar(self, nodo):
         if nodo is not None:
