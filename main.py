@@ -103,7 +103,10 @@ def menu():
         # Créditos
         elif opcion == "7":
             print("Créditos:")
-            print("Programa realizado por [Tu Nombre].")
+            print("Programa realizado por:")
+            print("Noé Abel Vergas López - 23170106")
+            print("Jonathan Iván Castro Saenz - 23170132")
+            print("Juan Alfredo Gómez González - 23170006")
 
         # Salir
         elif opcion == "8":

@@ -144,7 +144,7 @@ def modificar_dato():
 
 def mostrar_creditos():
     """Muestra los créditos del programa."""
-    messagebox.showinfo("Créditos", "Programa desarrollado por:\n- Tu Nombre\nEstructura de Datos")
+    messagebox.showinfo("Créditos", "Programa desarrollado por:\n- Noé Abel Vergas López - 23170106\n - Jonathan Iván Castro Saenz - 23170035\n Juan Alfredo Gómez González - 23170006 \nAsignatura: Estructura de Datos")
 
 def main():
     ventana = tk.Tk()
